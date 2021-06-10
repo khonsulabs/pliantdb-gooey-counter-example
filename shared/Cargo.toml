@@ -1,0 +1,13 @@
+[package]
+name = "shared"
+version = "0.1.0"
+authors = ["Jonathan Johnson <jon@khonsulabs.com>"]
+edition = "2018"
+
+[features]
+actionable-traits = []
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+actionable = "0.1.0-dev.2"
+pliantdb = { git = "https://github.com/khonsulabs/pliantdb.git", branch = "main" }
