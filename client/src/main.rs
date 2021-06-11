@@ -31,7 +31,6 @@ fn main() {
 #[derive(Debug)]
 struct Counter {
     command_sender: flume::Sender<DatabaseCommand>,
-    client: Client<ExampleApi>,
     count: Option<u32>,
 }
 
@@ -90,25 +89,18 @@ enum CounterEvent {
 fn launch_database_worker() -> Counter {
     let (command_sender, command_receiver) = flume::unbounded();
 
-    let client = App::block_on(async {
-        Client::new("ws://127.0.0.1:8081".parse().unwrap(), None)
-            .await
-            .unwrap()
-    });
-
-    App::spawn(process_database_commands(command_receiver, client.clone()));
+    App::spawn(process_database_commands(command_receiver));
 
     Counter {
         command_sender,
-        client,
         count: None,
     }
 }
 
-async fn process_database_commands(
-    receiver: flume::Receiver<DatabaseCommand>,
-    client: Client<ExampleApi>,
-) {
+async fn process_database_commands(receiver: flume::Receiver<DatabaseCommand>) {
+    let client = Client::new("ws://127.0.0.1:8081".parse().unwrap(), None)
+        .await
+        .unwrap();
     let mut context = None;
     while let Ok(command) = receiver.recv_async().await {
         match command {
