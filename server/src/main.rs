@@ -1,8 +1,8 @@
 use std::path::Path;
 
 use pliantdb::{
-    core::{backend::Backend, connection::ServerConnection, kv::Kv, pubsub::PubSub},
-    server::{Configuration, CustomServer},
+    core::{connection::ServerConnection, kv::Kv, pubsub::PubSub},
+    server::{Backend, Configuration, CustomServer},
 };
 use shared::{ExampleApi, IncrementCounterHandler, Request, RequestDispatcher, Response};
 

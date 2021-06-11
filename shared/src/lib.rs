@@ -1,4 +1,4 @@
-use pliantdb::core::backend::CustomApi;
+use pliantdb::core::custom_api::CustomApi;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]

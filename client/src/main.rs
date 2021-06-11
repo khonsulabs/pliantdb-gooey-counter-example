@@ -1,5 +1,5 @@
 use gooey::{
-    core::{Context, StyledWidget},
+    core::{Context, StyledWidget, WidgetId},
     widgets::{
         button::{Button, ButtonCommand},
         component::{Behavior, Component, ComponentBuilder, ComponentTransmogrifier},
@@ -9,29 +9,19 @@ use gooey::{
 };
 use pliantdb::client::Client;
 use shared::{ExampleApi, Request, Response};
-use tokio::runtime::{Handle, Runtime};
+
+enum DatabaseCommand {
+    Initialize(DatabaseContext),
+    Increment,
+}
+
+struct DatabaseContext {
+    widget_id: WidgetId,
+    context: Context<Component<Counter>>,
+}
 
 fn main() {
-    #[cfg(not(target_arch = "wasm32"))]
-    let counter = {
-        let tokio = tokio::runtime::Runtime::new().unwrap();
-        let handle = tokio.handle().clone();
-        let (shutdown_sender, shutdown_receiver) = flume::bounded(1);
-        std::thread::spawn(move || {
-            tokio.block_on(shutdown_receiver.recv_async()).unwrap();
-            println!("Exiting thread");
-        });
-
-        let client = handle
-            .block_on(async { Client::new("ws://127.0.0.1:8081".parse().unwrap(), None).await })
-            .unwrap();
-        Counter {
-            tokio: handle,
-            shutdown: shutdown_sender,
-            client,
-            count: None,
-        }
-    };
+    let counter = launch_database_worker();
 
     App::default()
         .with(ComponentTransmogrifier::<Counter>::default())
@@ -40,8 +30,7 @@ fn main() {
 
 #[derive(Debug)]
 struct Counter {
-    tokio: Handle,
-    shutdown: flume::Sender<()>,
+    command_sender: flume::Sender<DatabaseCommand>,
     client: Client<ExampleApi>,
     count: Option<u32>,
 }
@@ -60,34 +49,31 @@ impl Behavior for Counter {
             ),
         ))
     }
+    fn initialize(component: &mut Component<Self>, context: &Context<Component<Self>>) {
+        let _ = component
+            .behavior
+            .command_sender
+            .send(DatabaseCommand::Initialize(DatabaseContext {
+                context: context.clone(),
+                widget_id: component
+                    .registered_widget(&CounterWidgets::Button)
+                    .unwrap()
+                    .id()
+                    .clone(),
+            }));
+    }
 
     fn receive_event(
         component: &mut Component<Self>,
         event: Self::Event,
-        context: &Context<Component<Self>>,
+        _context: &Context<Component<Self>>,
     ) {
         let CounterEvent::ButtonClicked = event;
 
-        let client = component.behavior.client.clone();
-        let button = component
-            .registered_widget(&CounterWidgets::Button)
-            .unwrap();
-        let context = context.clone();
-        component.behavior.tokio.spawn(async move {
-            match client.send_api_request(Request::IncrementCounter).await {
-                Ok(response) => {
-                    let Response::CounterIncremented(count) = response;
-                    if let Some(state) = context.widget_state(button.id().id) {
-                        let channels = state.channels::<Button>().expect("incorrect widget type");
-                        channels.post_command(ButtonCommand::SetLabel(count.to_string()));
-                    }
-                }
-                Err(err) => {
-                    log::error!("Error sending request: {:?}", err);
-                    eprintln!("Error sending request: {:?}", err);
-                }
-            }
-        });
+        let _ = component
+            .behavior
+            .command_sender
+            .send(DatabaseCommand::Increment);
     }
 }
 
@@ -99,4 +85,53 @@ enum CounterWidgets {
 #[derive(Debug)]
 enum CounterEvent {
     ButtonClicked,
+}
+
+fn launch_database_worker() -> Counter {
+    let (command_sender, command_receiver) = flume::unbounded();
+
+    let client = App::block_on(async {
+        Client::new("ws://127.0.0.1:8081".parse().unwrap(), None)
+            .await
+            .unwrap()
+    });
+
+    App::spawn(process_database_commands(command_receiver, client.clone()));
+
+    Counter {
+        command_sender,
+        client,
+        count: None,
+    }
+}
+
+async fn process_database_commands(
+    receiver: flume::Receiver<DatabaseCommand>,
+    client: Client<ExampleApi>,
+) {
+    let mut context = None;
+    while let Ok(command) = receiver.recv_async().await {
+        match command {
+            DatabaseCommand::Initialize(new_context) => context = Some(new_context),
+            DatabaseCommand::Increment => {
+                increment_counter(&client, context.as_ref().expect("never initialized")).await;
+            }
+        }
+    }
+}
+
+async fn increment_counter(client: &Client<ExampleApi>, context: &DatabaseContext) {
+    match client.send_api_request(Request::IncrementCounter).await {
+        Ok(response) => {
+            let Response::CounterIncremented(count) = response;
+            context.context.send_command_to::<Button>(
+                &context.widget_id,
+                ButtonCommand::SetLabel(count.to_string()),
+            );
+        }
+        Err(err) => {
+            log::error!("Error sending request: {:?}", err);
+            eprintln!("Error sending request: {:?}", err);
+        }
+    }
 }
