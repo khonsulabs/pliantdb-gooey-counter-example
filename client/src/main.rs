@@ -21,7 +21,14 @@ struct DatabaseContext {
 }
 
 fn main() {
-    let counter = launch_database_worker();
+    let (command_sender, command_receiver) = flume::unbounded();
+
+    App::spawn(process_database_commands(command_receiver));
+
+    let counter = Counter {
+        command_sender,
+        count: None,
+    };
 
     App::default()
         .with(ComponentTransmogrifier::<Counter>::default())
@@ -84,17 +91,6 @@ enum CounterWidgets {
 #[derive(Debug)]
 enum CounterEvent {
     ButtonClicked,
-}
-
-fn launch_database_worker() -> Counter {
-    let (command_sender, command_receiver) = flume::unbounded();
-
-    App::spawn(process_database_commands(command_receiver));
-
-    Counter {
-        command_sender,
-        count: None,
-    }
 }
 
 async fn process_database_commands(receiver: flume::Receiver<DatabaseCommand>) {
