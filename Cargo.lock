@@ -8,8 +8,9 @@ checksum = "d9fe5e32de01730eb1f6b7f5b51c17e03e2325bf40a74f754f04f130043affff"
 
 [[package]]
 name = "actionable"
-version = "0.1.0-dev.2"
-source = "git+https://github.com/khonsulabs/actionable.git?branch=main#19927d0907548b7c844af86ea2ca927b2284dba9"
+version = "0.1.0-dev.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dd3daf0d80267d717a1781ed3bf398f2966396d099891c9d02f5f580c6c662d"
 dependencies = [
  "actionable-macros",
  "async-trait",
@@ -19,8 +20,9 @@ dependencies = [
 
 [[package]]
 name = "actionable-macros"
-version = "0.1.0-dev.2"
-source = "git+https://github.com/khonsulabs/actionable.git?branch=main#19927d0907548b7c844af86ea2ca927b2284dba9"
+version = "0.1.0-dev.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cda70e7c581613adc109b2e8b5b7cb3850221d343113a3a8699e23ddfe6c5360"
 dependencies = [
  "darling 0.12.4",
  "ident_case",
@@ -330,7 +332,7 @@ dependencies = [
 [[package]]
 name = "circulate"
 version = "0.1.0-dev.1"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "async-lock",
  "flume",
@@ -1287,7 +1289,7 @@ dependencies = [
 [[package]]
 name = "gooey"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "cfg-if 1.0.0",
  "gooey-browser",
@@ -1303,7 +1305,7 @@ dependencies = [
 [[package]]
 name = "gooey-browser"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "console_error_panic_hook",
  "gooey-core",
@@ -1316,7 +1318,7 @@ dependencies = [
 [[package]]
 name = "gooey-core"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "euclid",
  "flume",
@@ -1327,7 +1329,7 @@ dependencies = [
 [[package]]
 name = "gooey-kludgine"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "gooey-core",
  "kludgine",
@@ -1336,7 +1338,7 @@ dependencies = [
 [[package]]
 name = "gooey-rasterizer"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "gooey-core",
  "winit",
@@ -1345,7 +1347,7 @@ dependencies = [
 [[package]]
 name = "gooey-widgets"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#caca426b6460a20b95e7f6ab07b5e0a536005fa0"
 dependencies = [
  "flume",
  "gooey-browser",
@@ -1777,9 +1779,9 @@ checksum = "60302e4db3a61da70c0cb7991976248362f30319e88850c487b9b95bbf059e00"
 
 [[package]]
 name = "memchr"
-version = "2.4.0"
+version = "2.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b16bd47d9e329435e309c58469fe0791c2d0d1ba96ec0954152a5ae2b04387dc"
+checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
 
 [[package]]
 name = "memmap2"
@@ -1972,9 +1974,9 @@ dependencies = [
 
 [[package]]
 name = "nom"
-version = "6.1.2"
+version = "6.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e7413f999671bd4745a7b624bd370a569fb6bc574b23c83a3c5ed2e453f3d5e2"
+checksum = "046a595c7251e2f48b291c1b65d98ef1df51dbfbad46e99a1ff09729535a779e"
 dependencies = [
  "bitvec",
  "funty",
@@ -2281,7 +2283,7 @@ checksum = "989d43012e2ca1c4a02507c67282691a0a3207f9dc67cec596b43fe925b3d325"
 [[package]]
 name = "pliantdb"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "pliantdb-client",
  "pliantdb-core",
@@ -2291,7 +2293,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-client"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "async-lock",
  "async-trait",
@@ -2317,7 +2319,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-core"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "actionable",
  "anyhow",
@@ -2335,7 +2337,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-jobs"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2348,7 +2350,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-local"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2367,7 +2369,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-macros"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "proc-macro-error",
  "quote",
@@ -2377,7 +2379,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-server"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#aeaa8bdfe18b2b62e4e6a3ce9f409d40fe19ffc3"
 dependencies = [
  "actionable",
  "anyhow",

@@ -117,26 +117,19 @@ async fn process_database_commands(receiver: flume::Receiver<DatabaseCommand>) {
 }
 
 async fn watch_for_changes(client: Client<ExampleApi>, context: DatabaseContext) {
-    log::info!("entering watch for changes");
     let database = client.database::<()>(DATABASE_NAME).await.unwrap();
-    log::info!("Got database");
     let subscriber = database.create_subscriber().await.unwrap();
-    log::info!("Got Subscriber");
     subscriber
         .subscribe_to(COUNTER_CHANGED_TOPIC)
         .await
         .unwrap();
-    log::info!("Subscribed");
     while let Ok(message) = subscriber.receiver().recv_async().await {
-        log::info!("Received message");
         let new_count = message.payload::<u64>().unwrap();
-        log::info!("new count: {:?}", new_count);
         context.context.send_command_to::<Button>(
             &context.widget_id,
             ButtonCommand::SetLabel(new_count.to_string()),
         );
     }
-    log::info!("Exiting watch for changes");
 }
 
 async fn increment_counter(client: &Client<ExampleApi>, context: &DatabaseContext) {
