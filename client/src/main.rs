@@ -7,14 +7,18 @@ use gooey::{
     },
     App,
 };
-use pliantdb::client::Client;
-use shared::{ExampleApi, Request, Response};
+use pliantdb::{
+    client::Client,
+    core::pubsub::{PubSub, Subscriber},
+};
+use shared::{ExampleApi, Request, Response, COUNTER_CHANGED_TOPIC, DATABASE_NAME};
 
 enum DatabaseCommand {
     Initialize(DatabaseContext),
     Increment,
 }
 
+#[derive(Clone)]
 struct DatabaseContext {
     widget_id: WidgetId,
     context: Context<Component<Counter>>,
@@ -55,6 +59,7 @@ impl Behavior for Counter {
             ),
         ))
     }
+
     fn initialize(component: &mut Component<Self>, context: &Context<Component<Self>>) {
         let _ = component
             .behavior
@@ -94,18 +99,44 @@ enum CounterEvent {
 }
 
 async fn process_database_commands(receiver: flume::Receiver<DatabaseCommand>) {
-    let client = Client::new("ws://127.0.0.1:8081".parse().unwrap(), None)
+    let client = Client::new("ws://127.0.0.1:8081".parse().unwrap())
         .await
         .unwrap();
     let mut context = None;
     while let Ok(command) = receiver.recv_async().await {
         match command {
-            DatabaseCommand::Initialize(new_context) => context = Some(new_context),
+            DatabaseCommand::Initialize(new_context) => {
+                App::spawn(watch_for_changes(client.clone(), new_context.clone()));
+                context = Some(new_context);
+            }
             DatabaseCommand::Increment => {
                 increment_counter(&client, context.as_ref().expect("never initialized")).await;
             }
         }
     }
+}
+
+async fn watch_for_changes(client: Client<ExampleApi>, context: DatabaseContext) {
+    log::info!("entering watch for changes");
+    let database = client.database::<()>(DATABASE_NAME).await.unwrap();
+    log::info!("Got database");
+    let subscriber = database.create_subscriber().await.unwrap();
+    log::info!("Got Subscriber");
+    subscriber
+        .subscribe_to(COUNTER_CHANGED_TOPIC)
+        .await
+        .unwrap();
+    log::info!("Subscribed");
+    while let Ok(message) = subscriber.receiver().recv_async().await {
+        log::info!("Received message");
+        let new_count = message.payload::<u64>().unwrap();
+        log::info!("new count: {:?}", new_count);
+        context.context.send_command_to::<Button>(
+            &context.widget_id,
+            ButtonCommand::SetLabel(new_count.to_string()),
+        );
+    }
+    log::info!("Exiting watch for changes");
 }
 
 async fn increment_counter(client: &Client<ExampleApi>, context: &DatabaseContext) {

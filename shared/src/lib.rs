@@ -1,6 +1,9 @@
 use pliantdb::core::custom_api::CustomApi;
 use serde::{Deserialize, Serialize};
 
+pub const DATABASE_NAME: &str = "counter";
+pub const COUNTER_CHANGED_TOPIC: &str = "counter-changed";
+
 #[derive(Serialize, Deserialize, Debug)]
 #[cfg_attr(feature = "actionable-traits", derive(actionable::Actionable))]
 pub enum Request {

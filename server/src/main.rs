@@ -1,23 +1,28 @@
 use std::path::Path;
 
 use pliantdb::{
-    core::{connection::ServerConnection, kv::Kv, pubsub::PubSub},
+    core::{connection::ServerConnection, kv::Kv, permissions::Permissions, pubsub::PubSub},
     server::{Backend, Configuration, CustomServer},
 };
-use shared::{ExampleApi, IncrementCounterHandler, Request, RequestDispatcher, Response};
+use shared::{
+    ExampleApi, IncrementCounterHandler, Request, RequestDispatcher, Response,
+    COUNTER_CHANGED_TOPIC, DATABASE_NAME,
+};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let server =
-        CustomServer::<Example>::open(Path::new("server-data.pliantdb"), Configuration::default())
-            .await?;
+    let server = CustomServer::<Example>::open(Path::new("server-data.pliantdb"), Configuration {
+        default_permissions: Permissions::allow_all(),
+        ..Configuration::default()
+    })
+    .await?;
     server
         .set_custom_api_dispatcher(ApiDispatcher {
             server: server.clone(),
         })
         .await;
     server.register_schema::<()>().await?;
-    let _ = server.create_database::<()>("counter").await;
+    let _ = server.create_database::<()>(DATABASE_NAME).await;
     // Create a certificate if it doesn't exist.
     server.listen_for_websockets_on("127.0.0.1:8081").await?;
 
@@ -38,9 +43,8 @@ struct ApiDispatcher {
 }
 
 impl RequestDispatcher for ApiDispatcher {
-    type Output = Response;
-
     type Error = anyhow::Error;
+    type Output = Response;
 }
 
 #[actionable::async_trait]
@@ -53,7 +57,7 @@ impl IncrementCounterHandler for ApiDispatcher {
         current_value += 1;
         db.set_key("current-count", &current_value).await?;
 
-        db.publish("counter-changed", &current_value).await?;
+        db.publish(COUNTER_CHANGED_TOPIC, &current_value).await?;
         Ok(Response::CounterIncremented(current_value))
     }
 }

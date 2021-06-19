@@ -126,6 +126,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-lock"
+version = "2.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6a8ea61bf9947a1007c5cada31e647dbc77b103c679858150003ba697ea798b"
+dependencies = [
+ "event-listener",
+]
+
+[[package]]
 name = "async-trait"
 version = "0.1.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -152,6 +161,23 @@ name = "autocfg"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
+
+[[package]]
+name = "badge"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0228ae65b89e72921e86c19c3574da63bda0628e9d7da5e164f569bbf4e477d"
+dependencies = [
+ "base64 0.12.3",
+ "once_cell",
+ "rusttype",
+]
+
+[[package]]
+name = "base64"
+version = "0.12.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
 
 [[package]]
 name = "base64"
@@ -224,9 +250,9 @@ checksum = "9c59e7af012c713f529e7a3ee57ce9b31ddd858d4b512923602f74608b009631"
 
 [[package]]
 name = "bytemuck"
-version = "1.6.0"
+version = "1.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bd24bfbd2c054630764222780a681282d7d524ffc28b7925e712afdfb3502bf"
+checksum = "9966d2ab714d0f785dbac0a0396251a35280aeb42413281617d0209ab4898435"
 dependencies = [
  "bytemuck_derive",
 ]
@@ -304,13 +330,15 @@ dependencies = [
 [[package]]
 name = "circulate"
 version = "0.1.0-dev.1"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
+ "async-lock",
  "flume",
  "futures",
  "serde",
  "serde_cbor",
  "tokio",
+ "wasm-bindgen-futures",
 ]
 
 [[package]]
@@ -332,6 +360,7 @@ dependencies = [
 name = "client"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "flume",
  "gooey",
  "log",
@@ -750,6 +779,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "devx-cmd"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "771d86e03f7f740de595375e9fb2d39e527868c57e5642e6f4f7a10e2a02a2e2"
+dependencies = [
+ "log",
+]
+
+[[package]]
 name = "digest"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -819,18 +857,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
-name = "enum-as-inner"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c5f0096a91d210159eceb2ff5e1c4da18388a170e1e3ce948aac9c8fdbbf595"
-dependencies = [
- "heck",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "euclid"
 version = "0.22.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -838,6 +864,12 @@ checksum = "da96828553a086d7b18dcebfc579bd9628b016f86590d7453c115e490fa74b80"
 dependencies = [
  "num-traits",
 ]
+
+[[package]]
+name = "event-listener"
+version = "2.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7531096570974c3a9dcf9e4b8e1cede1ec26cf5046219fb3b9d897503b9be59"
 
 [[package]]
 name = "fabruic"
@@ -862,7 +894,6 @@ dependencies = [
  "serde",
  "thiserror",
  "tokio",
- "trust-dns-resolver",
  "url",
  "webpki",
  "webpki-roots",
@@ -1256,7 +1287,7 @@ dependencies = [
 [[package]]
 name = "gooey"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "cfg-if 1.0.0",
  "gooey-browser",
@@ -1265,13 +1296,14 @@ dependencies = [
  "gooey-rasterizer",
  "gooey-widgets",
  "tokio",
+ "wasm-bindgen",
  "wasm-bindgen-futures",
 ]
 
 [[package]]
 name = "gooey-browser"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "console_error_panic_hook",
  "gooey-core",
@@ -1284,7 +1316,7 @@ dependencies = [
 [[package]]
 name = "gooey-core"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "euclid",
  "flume",
@@ -1295,7 +1327,7 @@ dependencies = [
 [[package]]
 name = "gooey-kludgine"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "gooey-core",
  "kludgine",
@@ -1304,7 +1336,7 @@ dependencies = [
 [[package]]
 name = "gooey-rasterizer"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "gooey-core",
  "winit",
@@ -1313,7 +1345,7 @@ dependencies = [
 [[package]]
 name = "gooey-widgets"
 version = "0.1.0-dev.0"
-source = "git+https://github.com/khonsulabs/gooey.git?branch=main#98308666dd0564eab068b03b7bcfde8e2fef2ede"
+source = "git+https://github.com/khonsulabs/gooey.git?branch=main#30544025a60aba51af20a9bf2aa3b3967ea09415"
 dependencies = [
  "flume",
  "gooey-browser",
@@ -1361,25 +1393,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "363e3677e55ad168fef68cf9de3a4a310b53124c5e784c53a1d70e92d23f2126"
 dependencies = [
  "bitflags",
-]
-
-[[package]]
-name = "h2"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "825343c4eef0b63f541f8903f395dc5beb362a979b5799a84062527ef1e37726"
-dependencies = [
- "bytes",
- "fnv",
- "futures-core",
- "futures-sink",
- "futures-util",
- "http",
- "indexmap",
- "slab",
- "tokio",
- "tokio-util",
- "tracing",
 ]
 
 [[package]]
@@ -1506,13 +1519,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "61124eeebbd69b8190558df225adf7e4caafce0d743919e5d6b19652314ec5ec"
 dependencies = [
  "cfg-if 1.0.0",
+ "js-sys",
+ "wasm-bindgen",
+ "web-sys",
 ]
-
-[[package]]
-name = "ipnet"
-version = "2.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47be2f14c678be2fdcab04ab1171db51b2762ce6f0a8ee87c8dd4a04ed216135"
 
 [[package]]
 name = "itertools"
@@ -1567,6 +1577,17 @@ name = "json"
 version = "0.12.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "078e285eafdfb6c4b434e0d31e8cfcb5115b651496faca5749b88fafd4f23bfd"
+
+[[package]]
+name = "khonsu-tools"
+version = "0.1.0"
+source = "git+https://github.com/khonsulabs/khonsu-tools.git?branch=main#67f796c6a937981a12ca11ab2bfcd1e1b00fc4af"
+dependencies = [
+ "anyhow",
+ "badge",
+ "devx-cmd",
+ "structopt",
+]
 
 [[package]]
 name = "khronos-egl"
@@ -1654,9 +1675,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.96"
+version = "0.2.97"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5600b4e6efc5421841a2138a6b082e07fe12f9aaa12783d50e5d13325b26b4fc"
+checksum = "12b8adadd720df158f4d70dfe7ccc6adb0472d7c55ca83445f6a5ab3e36f8fb6"
 
 [[package]]
 name = "libloading"
@@ -1700,15 +1721,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
 dependencies = [
  "cfg-if 1.0.0",
-]
-
-[[package]]
-name = "lru-cache"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31e24f1ad8321ca0e8a1e0ac13f23cb668e6f5466c2c57319f6a5cf1cc8e3b1c"
-dependencies = [
- "linked-hash-map",
 ]
 
 [[package]]
@@ -1831,9 +1843,9 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.7.11"
+version = "0.7.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf80d3e903b34e0bd7282b218398aec54e082c840d9baf8339e0080a0c542956"
+checksum = "8c2bdb6314ec10835cd3293dd268473a835c02b7b352e788be788b3c6ca6bb16"
 dependencies = [
  "libc",
  "log",
@@ -2094,9 +2106,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.7.2"
+version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af8b08b04175473088b46763e51ee54da5f9a164bc162f615b91bc179dbf15a3"
+checksum = "692fcb63b64b1758029e0a96ee63e049ce8c5948587f2f7208df04625e5f6b56"
 
 [[package]]
 name = "opaque-debug"
@@ -2269,7 +2281,7 @@ checksum = "989d43012e2ca1c4a02507c67282691a0a3207f9dc67cec596b43fe925b3d325"
 [[package]]
 name = "pliantdb"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "pliantdb-client",
  "pliantdb-core",
@@ -2279,12 +2291,16 @@ dependencies = [
 [[package]]
 name = "pliantdb-client"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
+ "async-lock",
  "async-trait",
  "bincode",
+ "fabruic",
  "flume",
  "futures",
+ "js-sys",
+ "log",
  "once_cell",
  "pliantdb-core",
  "serde",
@@ -2293,18 +2309,20 @@ dependencies = [
  "tokio",
  "tokio-tungstenite",
  "url",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]
 name = "pliantdb-core"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "actionable",
  "anyhow",
  "async-trait",
  "circulate",
- "fabruic",
  "futures",
  "num-traits",
  "pliantdb-macros",
@@ -2317,7 +2335,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-jobs"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2330,7 +2348,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-local"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2349,7 +2367,7 @@ dependencies = [
 [[package]]
 name = "pliantdb-macros"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "proc-macro-error",
  "quote",
@@ -2359,13 +2377,14 @@ dependencies = [
 [[package]]
 name = "pliantdb-server"
 version = "0.1.0-dev.3"
-source = "git+https://github.com/khonsulabs/pliantdb.git?branch=main#b3c820e63295f9d778199f3474bac33f017de31e"
+source = "git+https://github.com/khonsulabs/pliantdb.git?branch=wasm-client#e294365f0ecdf5557c44723be6f3581698f23d16"
 dependencies = [
  "actionable",
  "anyhow",
  "async-trait",
  "bincode",
  "cfg-if 1.0.0",
+ "fabruic",
  "flume",
  "futures",
  "itertools",
@@ -2373,6 +2392,7 @@ dependencies = [
  "pliantdb-jobs",
  "pliantdb-local",
  "serde",
+ "serde_cbor",
  "structopt",
  "thiserror",
  "tokio",
@@ -2485,7 +2505,7 @@ checksum = "047aa96ec7ee6acabad7a1318dff72e9aff8994316bf2166c9b94cbec78ca54c"
 dependencies = [
  "bytes",
  "ct-logs",
- "rand 0.8.3",
+ "rand 0.8.4",
  "ring",
  "rustls",
  "rustls-native-certs",
@@ -2527,14 +2547,14 @@ dependencies = [
 
 [[package]]
 name = "rand"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ef9e7e66b4468674bfcb0c81af8b7fa0bb154fa9f28eb840da5c447baeb8d7e"
+checksum = "2e7573632e6454cf6b99d7aac4ccca54be06da05aca2ef7423d22d27d4d4bcd8"
 dependencies = [
  "libc",
  "rand_chacha 0.3.1",
- "rand_core 0.6.2",
- "rand_hc 0.3.0",
+ "rand_core 0.6.3",
+ "rand_hc 0.3.1",
 ]
 
 [[package]]
@@ -2554,7 +2574,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88"
 dependencies = [
  "ppv-lite86",
- "rand_core 0.6.2",
+ "rand_core 0.6.3",
 ]
 
 [[package]]
@@ -2568,9 +2588,9 @@ dependencies = [
 
 [[package]]
 name = "rand_core"
-version = "0.6.2"
+version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34cf66eb183df1c5876e2dcf6b13d57340741e8dc255b48e40a26de954d06ae7"
+checksum = "d34f1408f55294453790c48b2f1ebbb1c5b4b7563eb1f418bcfcfdbb06ebb4e7"
 dependencies = [
  "getrandom 0.2.3",
 ]
@@ -2586,11 +2606,11 @@ dependencies = [
 
 [[package]]
 name = "rand_hc"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3190ef7066a446f2e7f42e239d161e905420ccab01eb967c9eb27d21b2322a73"
+checksum = "d51e9f596de227fda2ea6c84607f5558e196eeaf43c986b724ba4fb8fdf497e7"
 dependencies = [
- "rand_core 0.6.2",
+ "rand_core 0.6.3",
 ]
 
 [[package]]
@@ -2655,9 +2675,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.2.8"
+version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "742739e41cd49414de871ea5e549afb7e2a3ac77b589bcbebe8c82fab37147fc"
+checksum = "5ab49abadf3f9e1c4bc499e8845e152ad87d2ad2d30371841171169e9d75feee"
 dependencies = [
  "bitflags",
 ]
@@ -2698,7 +2718,7 @@ version = "0.19.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35edb675feee39aec9c99fa5ff985081995a06d594114ae14cbe797ad7b7a6d7"
 dependencies = [
- "base64",
+ "base64 0.13.0",
  "log",
  "ring",
  "sct",
@@ -3191,9 +3211,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "tokio"
-version = "1.6.1"
+version = "1.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a38d31d7831c6ed7aad00aa4c12d9375fd225a6dd77da1d25b707346319a975"
+checksum = "5fb2ed024293bb19f7a5dc54fe83bf86532a44c12a2bb8ba40d64a4509395ca2"
 dependencies = [
  "autocfg",
  "bytes",
@@ -3221,17 +3241,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-rustls"
-version = "0.22.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc6844de72e57df1980054b38be3a9f4702aba4858be64dd700181a8a6d0e1b6"
-dependencies = [
- "rustls",
- "tokio",
- "webpki",
-]
-
-[[package]]
 name = "tokio-tungstenite"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3242,20 +3251,6 @@ dependencies = [
  "pin-project",
  "tokio",
  "tungstenite",
-]
-
-[[package]]
-name = "tokio-util"
-version = "0.6.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1caa0b0c8d94a049db56b5acf8cba99dc0623aab1b26d5b5f5e2d945846b3592"
-dependencies = [
- "bytes",
- "futures-core",
- "futures-sink",
- "log",
- "pin-project-lite",
- "tokio",
 ]
 
 [[package]]
@@ -3310,95 +3305,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "trust-dns-https"
-version = "0.20.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ab5bd71e569c3bf8c0398182bbbdd3065528dbe8cc5d2a9263641e3fdd6775d"
-dependencies = [
- "bytes",
- "cfg-if 1.0.0",
- "data-encoding",
- "futures-util",
- "h2",
- "http",
- "log",
- "rustls",
- "thiserror",
- "tokio",
- "tokio-rustls",
- "trust-dns-proto",
- "trust-dns-rustls",
- "webpki",
- "webpki-roots",
-]
-
-[[package]]
-name = "trust-dns-proto"
-version = "0.20.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad0d7f5db438199a6e2609debe3f69f808d074e0a2888ee0bccb45fe234d03f4"
-dependencies = [
- "async-trait",
- "cfg-if 1.0.0",
- "data-encoding",
- "enum-as-inner",
- "futures-channel",
- "futures-io",
- "futures-util",
- "idna",
- "ipnet",
- "lazy_static",
- "log",
- "rand 0.8.3",
- "ring",
- "smallvec",
- "thiserror",
- "tinyvec",
- "tokio",
- "url",
-]
-
-[[package]]
-name = "trust-dns-resolver"
-version = "0.20.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f6ad17b608a64bd0735e67bde16b0636f8aa8591f831a25d18443ed00a699770"
-dependencies = [
- "cfg-if 1.0.0",
- "futures-util",
- "lazy_static",
- "log",
- "lru-cache",
- "parking_lot",
- "rustls",
- "smallvec",
- "thiserror",
- "tokio",
- "tokio-rustls",
- "trust-dns-https",
- "trust-dns-proto",
- "trust-dns-rustls",
- "webpki-roots",
-]
-
-[[package]]
-name = "trust-dns-rustls"
-version = "0.20.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "808b76640354180e411074e9874632e73aa2a5206b7a621928834ae791e9628b"
-dependencies = [
- "futures-channel",
- "futures-io",
- "futures-util",
- "log",
- "rustls",
- "tokio",
- "tokio-rustls",
- "trust-dns-proto",
- "webpki",
-]
-
-[[package]]
 name = "trybuild"
 version = "1.0.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3424,14 +3330,14 @@ version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5fe8dada8c1a3aeca77d6b51a4f1314e0f4b8e438b7b1b71e3ddaca8080e4093"
 dependencies = [
- "base64",
+ "base64 0.13.0",
  "byteorder",
  "bytes",
  "http",
  "httparse",
  "input_buffer",
  "log",
- "rand 0.8.3",
+ "rand 0.8.4",
  "sha-1",
  "thiserror",
  "url",
@@ -3841,7 +3747,9 @@ dependencies = [
  "raw-window-handle",
  "scopeguard",
  "smithay-client-toolkit",
+ "wasm-bindgen",
  "wayland-client",
+ "web-sys",
  "winapi",
  "x11-dl",
 ]
@@ -3879,7 +3787,7 @@ version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "64abca276c58f8341ddc13fd4bd6ae75993cc669043f5b34813c90f7dff04771"
 dependencies = [
- "base64",
+ "base64 0.13.0",
  "chrono",
  "data-encoding",
  "der-parser",
@@ -3911,6 +3819,15 @@ name = "xml-rs"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b07db065a5cf61a7e4ba64f29e67db906fb1787316516c4e6e5ff0fea1efcd8a"
+
+[[package]]
+name = "xtask"
+version = "0.1.0"
+dependencies = [
+ "devx-cmd",
+ "khonsu-tools",
+ "structopt",
+]
 
 [[package]]
 name = "yasna"
